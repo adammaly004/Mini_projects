@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Todo list</title>
+    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="all">
+        <div class="container">
+            <div class="title">
+                <h1>My Todo list</h1>
+                <p>you will not forget</p>
+            </div>
+
+            <form class="write" method="POST">
+                <input class="input" type="text" name="text" placeholder="Write your task" autofocus autocomplete="off">
+                <button class="submit" type="submit"><i class="fas fa-plus"></i></button>
+            </form>
+
+
+            <div class="second-title">
+                {% if all > 0 %}
+                <h2></h2>
+                {% else %}
+                <h2>All is completed</h2>
+                {% endif %}
+            </div>
+
+            {% for time, task, complete, id, title in work %}
+            <div class="todo">
+                <div class="title-work">
+                    {% if complete %}
+                    <h3 style="color: #ffeb00;">{{ title }}</h3>
+                    {% else %}
+                    <h3>{{ title }}</h3>
+                    {% endif %}
+                    <a href='/delete/{{id}}'><span class="cross"><i class="far fa-trash-alt"></i>
+                        </span></a>
+                </div>
+                <div class="work">
+                    {% if complete %}
+                    <p style="text-decoration: line-through;">{{ task }}</p>
+                    {%else%}
+                    <p>{{ task }}</p>
+                    {%endif%}
+                </div>
+                <div class="time">
+                    <p>{{ time }}</p>
+                    <a href="/complete/{{id}}"><span class="check"><i class="fas fa-check"></i></span></a>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
+        <div class="counter">
+            <p>{{complete}}/{{all}}</p>
+        </div>
+    </div>
+</body>
+
+</html>
