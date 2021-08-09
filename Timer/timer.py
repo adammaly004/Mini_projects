@@ -1,8 +1,11 @@
 from tkinter import *
 from tkinter import ttk
+from pygame import mixer
 
 WIDTH = 800
 HEIGHT = 500
+
+mixer.init()  # initialise the pygame
 
 
 class App():
@@ -56,11 +59,13 @@ class App():
         if self.pause:
             if self.time <= 0:
                 self.time = self.max_time
+                self.sound()
                 self.pause = False
 
         else:
             if self.time <= 0:
                 self.time = self.max_pause
+                self.sound()
                 self.pause = True
 
     def show_time(self):
@@ -190,8 +195,11 @@ class App():
         self.pause_hours.set(str(self.pause_max_hour))
         self.pause_seconds.set(str(self.pause_max_secs))
 
+    def sound(self):
+        mixer.music.load(r'Timer/end.wav')
+        mixer.music.play(loops=3)
+
 
 root = Tk()
 app = App(root)
-
 root.mainloop()
