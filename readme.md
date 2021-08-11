@@ -1,6 +1,6 @@
 # Mini Projects
 
-I store my mini projects in this repositori.
+I store my mini projects in this repository.
 
 ## Setup & Installtion
 Ensure you have python 3.6+ installed.
