@@ -197,7 +197,7 @@ class App():
 
     def sound(self):
         mixer.music.load(r'Timer/end.wav')
-        mixer.music.play(loops=3)
+        mixer.music.play(loops=1)
 
 
 root = Tk()
