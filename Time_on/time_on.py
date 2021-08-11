@@ -1,6 +1,8 @@
 import win32gui
+import uiautomation as auto
 import time
 import datetime
+import sys
 import json
 
 active_window_name = ""
@@ -51,7 +53,7 @@ class Activities:
             self.new = False
 
     def update_total_time(self, index):
-        for i in range(1, len(self.data["Activities"][index]["time entries"])):
+        for i in range(0, len(self.data["Activities"][index]["time entries"])):
 
             t = datetime.datetime.strptime(self.data["Activities"][index]
                                            ["time entries"][i]["time"], '%H:%M:%S.%f')
@@ -65,15 +67,13 @@ class Activities:
         self.seconds = self.seconds % 60
 
         total = {
-            "total time": {
-                "days": str(self.days),
-                "hours": str(self.hours),
-                "minutes": str(self.minutes),
-                "seconds": str(self.seconds)
-            }
+            "days": str(self.days),
+            "hours": str(self.hours),
+            "minutes": str(self.minutes),
+            "seconds": str(self.seconds)
         }
 
-        self.data["Activities"][index]["time entries"][0] = total
+        self.data["Activities"][index]["total time"] = total
         with open('Time_on/activity.json', 'w') as json_file:
             json.dump(self.data, json_file,
                       indent=4, sort_keys=True)
@@ -81,15 +81,13 @@ class Activities:
     def new_table(self):
         data = {
             "name": self.name,
+            "total time": {
+                "days": self.days,
+                "hours": self.hours,
+                "minutes": self.minutes,
+                "seconds": self.seconds
+            },
             "time entries": [
-                {
-                    "total time": {
-                        "days": self.days,
-                        "hours": self.hours,
-                        "minutes": self.minutes,
-                        "seconds": self.seconds
-                    }
-                },
                 {
                     "time start": str(self.time_start),
                     "time end": str(self.time_end),
@@ -116,6 +114,15 @@ class Activities:
                       indent=4, sort_keys=True)
 
 
+def get_url():
+    window = win32gui.GetForegroundWindow()
+    chromeControl = auto.ControlFromHandle(window)
+    edit = chromeControl.EditControl()
+    name = 'https://' + edit.GetValuePattern().Value
+    #name = name.split("/")
+    return name
+
+
 def get_window():
     window = win32gui.GetForegroundWindow()
     active_window_name = win32gui.GetWindowText(window)
@@ -138,7 +145,8 @@ try:
             if not first_time:
                 end_time = datetime.datetime.now()
                 print(end_time-start_time)
-                a = Activities(active_window_name, start_time, end_time)
+                a = Activities(active_window_name,
+                               start_time, end_time)
                 start_time = datetime.datetime.now()
 
             first_time = False
