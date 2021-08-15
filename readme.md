@@ -2,7 +2,7 @@
 
 I store my mini projects in this repository.
 
-## Setup & Installtion
+## Setup & Installation
 Ensure you have python 3.6+ installed.
 
 ```bash
